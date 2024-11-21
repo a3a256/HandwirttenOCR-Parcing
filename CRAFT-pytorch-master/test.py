@@ -60,7 +60,7 @@ args = parser.parse_args()
 
 
 """ For test images in a folder """
-image_list, _, _ = file_utils.get_files(args.test_folder)
+# image_list, _, _ = file_utils.get_files(args.test_folder)
 
 result_folder = './result/'
 if not os.path.isdir(result_folder):
@@ -119,7 +119,9 @@ def test_net(net, image, text_threshold, link_threshold, low_text, cuda, poly, r
 
 
 
-if __name__ == '__main__':
+def main(img_path):
+
+    image_list, _, _ = file_utils.get_files(img_path)
     # load net
     net = CRAFT()     # initialize
 
@@ -154,21 +156,32 @@ if __name__ == '__main__':
 
     t = time.time()
 
+    print("Test image {:d}/{:d}: {:s}".format(k+1, len(image_list), img_path), end='\r')
+    image = imgproc.loadImage(img_path)
+
+    bboxes, polys, score_text = test_net(net, image, args.text_threshold, args.link_threshold, args.low_text, args.cuda, args.poly, refine_net)
+
+    # save score text
+    # filename, file_ext = os.path.splitext(os.path.basename(img_path))
+    # mask_file = result_folder + "/res_" + filename + '_mask.jpg'
+    # cv2.imwrite(mask_file, score_text)
+
+    # file_utils.saveResult(img_path, image[:,:,::-1], polys, dirname=result_folder)
+
     # load data
-    for k, image_path in enumerate(image_list):
-        print("Test image {:d}/{:d}: {:s}".format(k+1, len(image_list), image_path), end='\r')
-        image = imgproc.loadImage(image_path)
+    # for k, image_path in enumerate(image_list):
+    #     print("Test image {:d}/{:d}: {:s}".format(k+1, len(image_list), image_path), end='\r')
+    #     image = imgproc.loadImage(image_path)
 
-        bboxes, polys, score_text = test_net(net, image, args.text_threshold, args.link_threshold, args.low_text, args.cuda, args.poly, refine_net)
+    #     bboxes, polys, score_text = test_net(net, image, args.text_threshold, args.link_threshold, args.low_text, args.cuda, args.poly, refine_net)
 
-        # save score text
-        filename, file_ext = os.path.splitext(os.path.basename(image_path))
-        mask_file = result_folder + "/res_" + filename + '_mask.jpg'
-        cv2.imwrite(mask_file, score_text)
+    #     # save score text
+    #     filename, file_ext = os.path.splitext(os.path.basename(image_path))
+    #     mask_file = result_folder + "/res_" + filename + '_mask.jpg'
+    #     cv2.imwrite(mask_file, score_text)
 
-        print(bboxes)
-        print(polys)
+    #     file_utils.saveResult(image_path, image[:,:,::-1], polys, dirname=result_folder)
 
-        file_utils.saveResult(image_path, image[:,:,::-1], polys, dirname=result_folder)
+    # print("elapsed time : {}s".format(time.time() - t))
 
-    print("elapsed time : {}s".format(time.time() - t))
+    return polys
