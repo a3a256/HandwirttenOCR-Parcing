@@ -1,6 +1,11 @@
 from tkinter import *
 from tkinter import filedialog
 
+import sys
+import os
+
+from CRAFT_processing import test
+
 class UI:
     def __init__(self, ui):
         self.ui = ui
@@ -9,6 +14,7 @@ class UI:
     def browsing_files(self):
         filename = filedialog.askopenfilename()
         self.path = filename
+        test.parse(self.path, "CRAFT-pytorch-master/craft_mlt_25k.pth")
 
     def go(self):
         button = Button(master=self.ui, text="Select pitcure to parse...", command=self.browsing_files)

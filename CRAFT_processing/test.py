@@ -19,13 +19,13 @@ from PIL import Image
 import cv2
 from skimage import io
 import numpy as np
-import craft_utils
-import imgproc
-import file_utils
+import CRAFT_processing.craft_utils
+import CRAFT_processing.imgproc
+import CRAFT_processing.file_utils
 import json
 import zipfile
 
-from craft import CRAFT
+from CRAFT_processing.craft import CRAFT
 
 from collections import OrderedDict
 def copyStateDict(state_dict):
@@ -119,17 +119,17 @@ def test_net(net, image, text_threshold, link_threshold, low_text, cuda, poly, r
 
 
 
-def main(img_path):
+def parse(img_path, trained_model_path):
 
     image_list, _, _ = file_utils.get_files(img_path)
     # load net
     net = CRAFT()     # initialize
 
-    print('Loading weights from checkpoint (' + args.trained_model + ')')
+    # print('Loading weights from checkpoint (' + args.trained_model + ')')
     if args.cuda:
-        net.load_state_dict(copyStateDict(torch.load(args.trained_model)))
+        net.load_state_dict(copyStateDict(torch.load(trained_model_path)))
     else:
-        net.load_state_dict(copyStateDict(torch.load(args.trained_model, map_location='cpu')))
+        net.load_state_dict(copyStateDict(torch.load(trained_model_path, map_location='cpu')))
 
     if args.cuda:
         net = net.cuda()
@@ -156,7 +156,7 @@ def main(img_path):
 
     t = time.time()
 
-    print("Test image {:d}/{:d}: {:s}".format(k+1, len(image_list), img_path), end='\r')
+    # print("Test image {:d}/{:d}: {:s}".format(k+1, len(image_list), img_path), end='\r')
     image = imgproc.loadImage(img_path)
 
     bboxes, polys, score_text = test_net(net, image, args.text_threshold, args.link_threshold, args.low_text, args.cuda, args.poly, refine_net)
