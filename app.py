@@ -14,7 +14,7 @@ class UI:
     def browsing_files(self):
         filename = filedialog.askopenfilename()
         self.path = filename
-        test.parse(self.path, "CRAFT_processing/craft_mlt_25k.pth")
+        print(test.parse(self.path, "CRAFT_processing/craft_mlt_25k.pth"))
 
     def go(self):
         button = Button(master=self.ui, text="Select pitcure to parse...", command=self.browsing_files)
