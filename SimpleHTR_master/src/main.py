@@ -143,8 +143,9 @@ def infer(model: Model, fn_img: Path) -> None:
 
     batch = Batch([img], None, 1)
     recognized, probability = model.infer_batch(batch, True)
-    print(f'Recognized: "{recognized[0]}"')
-    print(f'Probability: {probability[0]}')
+    return recognized
+    # print(f'Recognized: "{recognized[0]}"')
+    # print(f'Probability: {probability[0]}')
 
 
 def parse_args() -> argparse.Namespace:
@@ -202,7 +203,7 @@ def main():
     # infer text on test image
     elif args.mode == 'infer':
         model = Model(char_list_from_file(), decoder_type, must_restore=True, dump=args.dump)
-        infer(model, args.img_file)
+        return infer(model, args.img_file)
 
 
 if __name__ == '__main__':
