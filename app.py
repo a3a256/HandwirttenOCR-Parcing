@@ -5,6 +5,7 @@ import sys
 import os
 
 from CRAFT_processing import test
+from SimpleHTR_master.src import main
 
 class UI:
     def __init__(self, ui):
@@ -14,7 +15,8 @@ class UI:
     def browsing_files(self):
         filename = filedialog.askopenfilename()
         self.path = filename
-        print(test.parse(self.path, "CRAFT_processing/craft_mlt_25k.pth"))
+        print(main.main())
+        # print(test.parse(self.path, "CRAFT_processing/craft_mlt_25k.pth"))
 
     def go(self):
         button = Button(master=self.ui, text="Select pitcure to parse...", command=self.browsing_files)

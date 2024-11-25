@@ -6,16 +6,16 @@ import cv2
 import editdistance
 from path import Path
 
-from dataloader_iam import DataLoaderIAM, Batch
-from model import Model, DecoderType
-from preprocessor import Preprocessor
+from SimpleHTR_master.src.dataloader_iam import DataLoaderIAM, Batch
+from SimpleHTR_master.src.model import Model, DecoderType
+from SimpleHTR_master.src.preprocessor import Preprocessor
 
 
 class FilePaths:
     """Filenames and paths to data."""
-    fn_char_list = '../model/charList.txt'
-    fn_summary = '../model/summary.json'
-    fn_corpus = '../data/corpus.txt'
+    fn_char_list = 'SimpleHTR_master/model/charList.txt'
+    fn_summary = 'SimpleHTR_master/model/summary.json'
+    fn_corpus = 'SimpleHTR_master/data/corpus.txt'
 
 
 def get_img_height() -> int:
@@ -165,7 +165,7 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def main():
+def main(path_to_image):
     """Main function."""
 
     # parse arguments and set CTC decoder
@@ -203,8 +203,8 @@ def main():
     # infer text on test image
     elif args.mode == 'infer':
         model = Model(char_list_from_file(), decoder_type, must_restore=True, dump=args.dump)
-        return infer(model, args.img_file)
+        return infer(model, path_to_image)
 
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()

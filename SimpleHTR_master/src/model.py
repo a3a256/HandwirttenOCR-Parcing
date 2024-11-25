@@ -5,7 +5,7 @@ from typing import List, Tuple
 import numpy as np
 import tensorflow as tf
 
-from dataloader_iam import Batch
+from SimpleHTR_master.src.dataloader_iam import Batch
 
 # Disable eager mode
 tf.compat.v1.disable_eager_execution()
@@ -134,8 +134,8 @@ class Model:
         elif self.decoder_type == DecoderType.WordBeamSearch:
             # prepare information about language (dictionary, characters in dataset, characters forming words)
             chars = ''.join(self.char_list)
-            word_chars = open('../model/wordCharList.txt').read().splitlines()[0]
-            corpus = open('../data/corpus.txt').read()
+            word_chars = open('SimpleHTR/model/wordCharList.txt').read().splitlines()[0]
+            corpus = open('SimpleHTR/data/corpus.txt').read()
 
             # decode using the "Words" mode of word beam search
             from word_beam_search import WordBeamSearch
@@ -153,7 +153,7 @@ class Model:
         sess = tf.compat.v1.Session()  # TF session
 
         saver = tf.compat.v1.train.Saver(max_to_keep=1)  # saver saves model to file
-        model_dir = '../model/'
+        model_dir = 'SimpleHTR/model/'
         latest_snapshot = tf.train.latest_checkpoint(model_dir)  # is there a saved model?
 
         # if model must be restored (for inference), there must be a snapshot
