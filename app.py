@@ -15,8 +15,12 @@ class UI:
     def browsing_files(self):
         filename = filedialog.askopenfilename()
         self.path = filename
-        print(main.main())
+        # print(main.main())
         # print(test.parse(self.path, "CRAFT_processing/craft_mlt_25k.pth"))
+
+        coordinates = test.parse(self.path, "CRAFT_processing/craft_mlt_25k.pth")
+
+        print(coordinates)
 
     def go(self):
         button = Button(master=self.ui, text="Select pitcure to parse...", command=self.browsing_files)
