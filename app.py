@@ -5,6 +5,7 @@ import sys
 import os
 
 from CRAFT_processing import test
+from CRAFT_processing.file_utils import process_bboxes
 from SimpleHTR_master.src import main
 
 class UI:
@@ -21,6 +22,10 @@ class UI:
         coordinates = test.parse(self.path, "CRAFT_processing/craft_mlt_25k.pth")
 
         print(coordinates)
+
+        boxes = process_bboxes(coordinates)
+
+        print(boxes)
 
     def go(self):
         button = Button(master=self.ui, text="Select pitcure to parse...", command=self.browsing_files)

@@ -30,6 +30,23 @@ def list_files(in_path):
     # gt_files.sort()
     return img_files, mask_files, gt_files
 
+
+def process_bboxes(boxes):
+    """ save text detection result one by one
+    Args:
+        img_file (str): image file name
+        img (array): raw image context
+        boxes (array): array of result file
+            Shape: [num_detections, 4] for BB output / [num_detections, 4] for QUAD output
+    Return:
+        list of lists
+    """
+    bboxes = []
+    for i, box in enumerate(boxes):
+        poly = np.array(box).astype(np.int32).reshape((-1))
+        bboxes += [poly.tolist()]
+    return bboxes
+
 def saveResult(img_file, img, boxes, dirname='./result/', verticals=None, texts=None):
         """ save text detection result one by one
         Args:
