@@ -42,7 +42,7 @@ def process_bboxes(boxes):
         list of lists
     """
     bboxes = []
-    for i, box in enumerate(boxes):
+    for box in boxes:
         poly = np.array(box).astype(np.int32).reshape((-1))
         bboxes += [poly.tolist()]
     return bboxes
