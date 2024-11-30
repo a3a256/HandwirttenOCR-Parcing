@@ -12,6 +12,11 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from PIL import Image
 
+import numpy as np
+
+import cv2
+
+
 class UI:
     def __init__(self, ui):
         self.ui = ui
@@ -23,23 +28,19 @@ class UI:
         # print(main.main())
         # print(test.parse(self.path, "CRAFT_processing/craft_mlt_25k.pth"))
 
-        # coordinates = test.parse(self.path, "CRAFT_processing/craft_mlt_25k.pth")
+        coordinates = test.parse(self.path, "CRAFT_processing/craft_mlt_25k.pth")
+        # print(coordinates)
+        boxes = process_bboxes(coordinates)
 
-        # boxes = process_bboxes(coordinates)
+        img = Image.open(self.path)
 
-        # print(boxes)
+        corner_1 = min(boxes[0][1], boxes[0][3])
+        corner_2 = max(boxes[0][5], boxes[0][7])
 
-        im = Image.open(self.path)
+        im = im.crop(img, (boxes[0][0], corner_1, boxes[0][2], corner_2))
 
-        img2 = im.crop((2, 9, 135, 65))
+        im.show()
 
-        # Create figure and axes
-        fig, ax = plt.subplots()
-
-        # Display the image
-        ax.imshow(img2)
-
-        plt.show()
 
     def go(self):
         button = Button(master=self.ui, text="Select pitcure to parse...", command=self.browsing_files)
