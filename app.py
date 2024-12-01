@@ -37,7 +37,7 @@ class UI:
         corner_1 = min(boxes[0][1], boxes[0][3])
         corner_2 = max(boxes[0][5], boxes[0][7])
 
-        im = im.crop(img, (boxes[0][0], corner_1, boxes[0][2], corner_2))
+        im = img.crop((boxes[0][0], corner_1, boxes[0][2], corner_2))
 
         im.show()
 
