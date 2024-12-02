@@ -14,8 +14,6 @@ from PIL import Image
 
 import numpy as np
 
-import cv2
-
 
 class UI:
     def __init__(self, ui):
@@ -40,6 +38,14 @@ class UI:
         im = img.crop((boxes[0][0], corner_1, boxes[0][2], corner_2))
 
         im.show()
+
+        im.save("SimpleHTR_master/data/obj.png", "PNG")
+
+        word = main.main("SimpleHTR_master/data/obj.png")
+
+        print(word)
+
+        os.remove("SimpleHTR_master/data/obj.png")
 
 
     def go(self):
