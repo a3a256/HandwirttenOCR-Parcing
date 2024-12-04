@@ -23,29 +23,42 @@ class UI:
     def browsing_files(self):
         filename = filedialog.askopenfilename()
         self.path = filename
-        # print(main.main())
-        # print(test.parse(self.path, "CRAFT_processing/craft_mlt_25k.pth"))
 
         coordinates = test.parse(self.path, "CRAFT_processing/craft_mlt_25k.pth")
-        # print(coordinates)
         boxes = process_bboxes(coordinates)
 
         img = Image.open(self.path)
 
-        corner_1 = min(boxes[0][1], boxes[0][3])
-        corner_2 = max(boxes[0][5], boxes[0][7])
+        bounding_boxes = []
+        for box in boxes:
+            corner_1 = min(box[1], box[3])
+            corner_2 = min(box[5], box[7])
+            bounding_box = [box[0], corner_1, box[2], corner_2]
+            bounding_boxes += [bounding_box]
 
-        im = img.crop((boxes[0][0], corner_1, boxes[0][2], corner_2))
+        bounding_boxes = sorted(bounding_boxes, key=lambda x: (x[0], x[1], x[2], x[3]))
 
-        im.show()
+        for box in bounding_boxes:
+            im = img.crop((box[0], box[1], box[2], box[3]))
+            im.save("SimpleHTR_master/data/obj.png", "PNG")
+            word = main.main("SimpleHTR_master/data/obj.png")
+            print(word, end=' ')
+            os.remove("SimpleHTR_master/data/obj.png")
 
-        im.save("SimpleHTR_master/data/obj.png", "PNG")
+        # corner_1 = min(boxes[0][1], boxes[0][3])
+        # corner_2 = max(boxes[0][5], boxes[0][7])
 
-        word = main.main("SimpleHTR_master/data/obj.png")
+        # im = img.crop((boxes[0][0], corner_1, boxes[0][2], corner_2))
 
-        print(word)
+        # im.show()
 
-        os.remove("SimpleHTR_master/data/obj.png")
+        # im.save("SimpleHTR_master/data/obj.png", "PNG")
+
+        # word = main.main("SimpleHTR_master/data/obj.png")
+
+        # print(word)
+
+        # os.remove("SimpleHTR_master/data/obj.png")
 
 
     def go(self):
