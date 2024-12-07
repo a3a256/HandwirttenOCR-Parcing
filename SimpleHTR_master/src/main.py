@@ -6,9 +6,9 @@ import cv2
 import editdistance
 from path import Path
 
-from SimpleHTR_master.src.dataloader_iam import DataLoaderIAM, Batch
-from SimpleHTR_master.src.model import Model, DecoderType
-from SimpleHTR_master.src.preprocessor import Preprocessor
+from dataloader_iam import DataLoaderIAM, Batch
+from model import Model, DecoderType
+from preprocessor import Preprocessor
 
 
 class FilePaths:
@@ -143,7 +143,12 @@ def infer(model: Model, fn_img: Path) -> None:
 
     batch = Batch([img], None, 1)
     recognized, probability = model.infer_batch(batch, True)
-    return recognized[0]
+    f = open("result.txt", "w")
+    f.write(recognized[0])
+    f.close()
+
+    # print(recognized[0])
+    # return recognized[0]
 
 
 def parse_args() -> argparse.Namespace:
@@ -201,8 +206,8 @@ def main(path_to_image):
     # infer text on test image
     elif args.mode == 'infer':
         model = Model(char_list_from_file(), decoder_type, must_restore=True, dump=args.dump)
-        return infer(model, path_to_image)
+        infer(model, path_to_image)
 
 
-# if __name__ == '__main__':
-#     main()
+if __name__ == '__main__':
+    main("SimpleHTR_master/data/obj.png")

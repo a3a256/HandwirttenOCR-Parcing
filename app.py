@@ -6,13 +6,15 @@ import os
 
 from CRAFT_processing import test
 from CRAFT_processing.file_utils import process_bboxes
-from SimpleHTR_master.src import main
+# from SimpleHTR_master.src import main
 
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from PIL import Image
 
 import numpy as np
+
+# import tensorflow as tf
 
 
 class UI:
@@ -38,12 +40,19 @@ class UI:
 
         bounding_boxes = sorted(bounding_boxes, key=lambda x: (x[0], x[1], x[2], x[3]))
 
+        result = []
         for box in bounding_boxes:
             im = img.crop((box[0], box[1], box[2], box[3]))
             im.save("SimpleHTR_master/data/obj.png", "PNG")
-            word = main.main("SimpleHTR_master/data/obj.png")
-            print(word, end=' ')
+
+            os.system("python3 SimpleHTR_master/src/main.py")
             os.remove("SimpleHTR_master/data/obj.png")
+
+            f = open("result.txt", "r")
+            result += [f.read()]
+            f.close()
+
+        print(" ".join(result))
 
         # corner_1 = min(boxes[0][1], boxes[0][3])
         # corner_2 = max(boxes[0][5], boxes[0][7])
