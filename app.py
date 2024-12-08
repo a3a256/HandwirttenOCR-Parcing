@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import filedialog
+from tkinter.scrolledtext import ScrolledText
 
 import sys
 import os
@@ -21,10 +22,13 @@ class UI:
     def __init__(self, ui):
         self.ui = ui
         self.path = None
+        self.textfield = ScrolledText(self.ui, wrap=WORD)
 
     def browsing_files(self):
         filename = filedialog.askopenfilename()
         self.path = filename
+
+        self.textfield.delete("1.0", END)
 
         coordinates = test.parse(self.path, "CRAFT_processing/craft_mlt_25k.pth")
         boxes = process_bboxes(coordinates)
@@ -52,27 +56,17 @@ class UI:
             result += [f.read()]
             f.close()
 
-        print(" ".join(result))
+        res = " ".join(result)
 
-        # corner_1 = min(boxes[0][1], boxes[0][3])
-        # corner_2 = max(boxes[0][5], boxes[0][7])
+        print(res)
 
-        # im = img.crop((boxes[0][0], corner_1, boxes[0][2], corner_2))
-
-        # im.show()
-
-        # im.save("SimpleHTR_master/data/obj.png", "PNG")
-
-        # word = main.main("SimpleHTR_master/data/obj.png")
-
-        # print(word)
-
-        # os.remove("SimpleHTR_master/data/obj.png")
+        self.textfield.insert(END, res)
 
 
     def go(self):
         button = Button(master=self.ui, text="Select pitcure to parse...", command=self.browsing_files)
         button.grid(row=0, column=0)
+        self.textfield.grid(row=1, column=0)
         self.ui.mainloop()
 
 
